@@ -32,7 +32,6 @@ updates:
   - package-ecosystem: "cargo"
     directories:
       - "/bindings/rust/standard"
-      - "/bindings/rust/extended/s2n-tls"
-      - "/bindings/rust/extended/s2n-tls-tokio"
+      - "/bindings/rust/extended"
     schedule:
       interval: "daily"
