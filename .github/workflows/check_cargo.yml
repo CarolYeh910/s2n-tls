@@ -36,7 +36,7 @@ jobs:
       - name: Compare Cargo
         working-directory: ${{env.ROOT_PATH}}/s2n-tls-sys
         id: diff
-        run: git diff --exit-code <(sort Cargo.toml) <(git show HEAD:${{env.ROOT_PATH}}/s2n-tls-sys/Cargo.toml | sort -)
+        run: git diff --exit-code Cargo.toml
         continue-on-error: true
 
       - name: Failure
