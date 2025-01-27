@@ -88,27 +88,27 @@ fn main() {
     }
 
     // generate a cargo.toml that defines the correct features
-    let features_definition_token = unstable_headers
+    let mut features_definition_token = unstable_headers
         .iter()
         .map(|(header_name, _header)| format!("unstable-{header_name} = []"))
-        .collect::<Vec<String>>()
-        .join("\n");
+        .collect::<Vec<String>>();
+    features_definition_token.sort();
     let cargo_template = out_dir.join("templates/Cargo.template");
     let cargo_template = read_to_string(cargo_template).expect("unable to read cargo template");
-    let cargo_toml = cargo_template.replace(FEATURE_TOKEN_PLACEHOLDER, &features_definition_token);
+    let cargo_toml = cargo_template.replace(FEATURE_TOKEN_PLACEHOLDER, &(features_definition_token.join("\n")));
     fs::write(out_dir.join("Cargo.toml"), cargo_toml).unwrap();
 
     // generate a features.rs that includes the correct modules
-    let mut features_module_token = unstable_headers
+    let features_module_token = unstable_headers
         .iter()
         .map(|(header_name, _header)| {
             format!("conditional_module!({header_name}, \"unstable-{header_name}\");")
         })
-        .collect::<Vec<String>>();
-    features_module_token.sort();
+        .collect::<Vec<String>>()
+        .join("\n");
     let features_template = out_dir.join("templates/features.template");
     let features_template = read_to_string(features_template).expect("unable to features template");
-    let features_rs = features_template.replace(FEATURE_TOKEN_PLACEHOLDER, &(features_module_token.join("\n")));
+    let features_rs = features_template.replace(FEATURE_TOKEN_PLACEHOLDER, &features_module_token);
     std::fs::write(out_dir.join("src/features.rs"), features_rs).unwrap();
 
     functions.tests(&out_dir.join("src/tests.rs")).unwrap();
