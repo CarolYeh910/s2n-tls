@@ -333,6 +333,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
+
+      - uses: SebRollen/toml-action@v1.2.0
+        id: read_toml
+        with:
+          file: '${{env.ROOT_PATH}}/rust-toolchain.toml'
+          field: 'toolchain.channel'
+
       # Enforce crate msrv matches rust-toolchain
       - name: Check MSRV of s2n-tls
         run: grep "rust-version = ${{steps.read_toml.outputs.value}}" ${{env.ROOT_PATH}}/s2n-tls/Cargo.toml
