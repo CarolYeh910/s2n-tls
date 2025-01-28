@@ -40,7 +40,7 @@ jobs:
 
       - name: Configure AWS Credentials
         if: github.event_name == 'push'
-        uses: aws-actions/configure-aws-credentials@v4.0.2
+        uses: aws-actions/configure-aws-credentials@v4.0.3
         with:
           role-to-assume: arn:aws:iam::024603541914:role/GitHubOIDCRole
           role-session-name: s2ntlsghabenchsession
